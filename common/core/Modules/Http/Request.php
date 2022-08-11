@@ -17,6 +17,7 @@ class Request
 
     public readonly array $headers;
     public readonly array $files;
+    /** @var Cookie[] */
     public readonly array $cookies;
 
     public readonly string $url;
@@ -29,7 +30,7 @@ class Request
 
         $this->headers = $this->prepareHeaders($request->getHeaders());
         $this->files = $this->prepareFiles($request->getUploadedFiles());
-        $this->cookies = $request->getCookieParams();
+        $this->cookies = $this->prepareCookies($request->getCookieParams());
 
         $this->url = $this->prepareUrl($request->getUri());
         $this->method = RequestMethod::from($request->getMethod());
@@ -38,7 +39,6 @@ class Request
     private function prepareFiles(array $files): array
     {
         $preparedFiles = [];
-
         /** @var UploadedFileInterface $file */
         foreach ($files as $file) {
             $preparedFiles[] = new LoadedFile($file);
@@ -72,5 +72,15 @@ class Request
         }
 
         return $preparedHeaders;
+    }
+
+    private function prepareCookies(array $cookies): array
+    {
+        $preparedCookies = [];
+        foreach ($cookies as $key => $value) {
+            $preparedCookies[$key] = new Cookie($key, $value);
+        }
+
+        return $preparedCookies;
     }
 }

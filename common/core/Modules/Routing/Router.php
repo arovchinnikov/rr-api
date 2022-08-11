@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Core\Modules\Routing;
 
-use Core\Modules\Http\Enums\ResponseCode;
+use App\Http\Controllers\TestController;
 use Core\Modules\Http\Request;
-use Core\Modules\RoadRunner\Exceptions\RoadRunnerException;
 use Core\Modules\RoadRunner\HttpFactory;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -21,12 +20,13 @@ class Router
         $this->httpFactory = $factory;
     }
 
-    /**
-     * @throws RoadRunnerException
-     */
     public function dispatch(ServerRequestInterface|RequestInterface $requestData): ResponseInterface
     {
         $request = new Request($requestData);
-        return $this->httpFactory->createJsonResponse(['success' => true], ResponseCode::ok);
+
+        $controller = new TestController($request);
+        $content = $controller->index();
+
+        return $this->httpFactory->createJsonResponse($content, $controller->response);
     }
 }

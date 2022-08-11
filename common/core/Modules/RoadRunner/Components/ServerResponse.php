@@ -9,7 +9,7 @@ use Core\Modules\RoadRunner\Components\Traits\MessageTrait;
 use Core\Modules\RoadRunner\Exceptions\RoadRunnerException;
 use Psr\Http\Message\ResponseInterface;
 
-class Response implements ResponseInterface
+class ServerResponse implements ResponseInterface
 {
     use MessageTrait;
 

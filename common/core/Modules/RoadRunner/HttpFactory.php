@@ -6,8 +6,9 @@ namespace Core\Modules\RoadRunner;
 
 use Core\Base\Interfaces\Types\ToArray;
 use Core\Modules\Http\Enums\ResponseCode;
+use Core\Modules\Http\Response;
 use Core\Modules\RoadRunner\Components\Request;
-use Core\Modules\RoadRunner\Components\Response;
+use Core\Modules\RoadRunner\Components\ServerResponse;
 use Core\Modules\RoadRunner\Components\ServerRequest;
 use Core\Modules\RoadRunner\Components\Stream;
 use Core\Modules\RoadRunner\Components\UploadedFile;
@@ -40,16 +41,13 @@ class HttpFactory implements
         return new Request($method, $uri);
     }
 
-    /**
-     * @throws Exceptions\RoadRunnerException
-     */
     public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
     {
         if (func_num_args() < 2) {
             $reasonPhrase = null;
         }
 
-        return new Response($code, [], null, '1.1', $reasonPhrase);
+        return new ServerResponse($code, [], null, '1.1', $reasonPhrase);
     }
 
     /**
@@ -120,18 +118,18 @@ class HttpFactory implements
         return new ServerRequest($method, $uri, [], null, '1.1', $serverParams);
     }
 
-    /**
-     * @throws Exceptions\RoadRunnerException
-     */
-    public function createJsonResponse(array|ToArray $body, ResponseCode $responseCode = null): ResponseInterface
+    public function createJsonResponse(array $body, Response $response): ResponseInterface
     {
-        $response = $this
+        $serverResponse = $this
             ->createResponse()
-            ->withStatus($responseCode->value)
+            ->withStatus($response->getCode()->value)
             ->withHeader('Content-Type', 'application/json');
 
-        $response->getBody()->write(json_encode($body));
+        foreach ($response->getCookies() as $cookie) {
+            $serverResponse = $serverResponse->withHeader('Set-Cookie', $cookie->getRawCookie());
+        }
 
-        return $response;
+        $serverResponse->getBody()->write(json_encode($body));
+        return $serverResponse;
     }
 }
