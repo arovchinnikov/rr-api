@@ -132,4 +132,15 @@ class HttpFactory implements
         $serverResponse->getBody()->write(json_encode($body));
         return $serverResponse;
     }
+
+    public function createErrorResponse(array $body, int $code): ResponseInterface
+    {
+        $serverResponse = $this
+            ->createResponse()
+            ->withStatus($code)
+            ->withHeader('Content-Type', 'application/json');
+
+        $serverResponse->getBody()->write(json_encode($body));
+        return $serverResponse;
+    }
 }

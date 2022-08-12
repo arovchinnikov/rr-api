@@ -9,12 +9,6 @@ use Core\Modules\Http\Response;
 
 abstract class BaseController
 {
-    public readonly Request $request;
-    public readonly Response $response;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-        $this->response = new Response();
-    }
+    public Request $request;
+    public Response $response;
 }

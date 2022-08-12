@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Core;
 
+use Core\Modules\Data\Config;
 use Core\Modules\Data\Env;
 use Core\Modules\Debug\Log;
 use Core\Modules\RoadRunner\HttpFactory;
@@ -17,15 +18,21 @@ class App
     private HttpFactory $factory;
 
     private static Worker $worker;
-    private static Router $router;
+    private Router $router;
 
     public function __construct()
     {
         $this->factory = new HttpFactory();
+        Env::init();
+        $config = new Config();
 
         self::$worker = new Worker($this->factory);
-        self::$router = new Router($this->factory);
-        Env::init();
+        $this->router = new Router($this->factory);
+    }
+
+    public static function getWorker(): ?Worker
+    {
+        return self::$worker ?? null;
     }
 
     /**
@@ -35,7 +42,7 @@ class App
     {
         while ($request = self::$worker->waitRequest()) {
             try {
-                $result = self::$router->dispatch($request);
+                $result = $this->router->dispatch($request);
                 self::$worker->respond($result);
             } catch (Throwable $e) {
                 Log::error((string)$e);
@@ -44,10 +51,5 @@ class App
                 self::$worker->getWorker()->error((string)$e);
             }
         }
-    }
-
-    public static function getWorker(): ?Worker
-    {
-        return self::$worker ?? null;
     }
 }

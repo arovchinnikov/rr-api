@@ -101,7 +101,7 @@ class Cookie
 
         if (isset($this->expires)) {
             $cookieString .= '; Expires=' . $this->expires;
-        } else if (isset($this->maxAge)) {
+        } elseif (isset($this->maxAge)) {
             $cookieString .= '; Max-Age=' . $this->maxAge;
         }
 

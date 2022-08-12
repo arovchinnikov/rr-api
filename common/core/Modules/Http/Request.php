@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Core\Modules\Http;
 
 use Core\Modules\Http\Enums\RequestMethod;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
@@ -22,11 +21,13 @@ class Request
 
     public readonly string $url;
     public readonly RequestMethod $method;
+    public readonly array $urlParams;
 
-    public function __construct(ServerRequestInterface|RequestInterface $request)
+    public function __construct(ServerRequestInterface $request, array $urlParams = [])
     {
         $this->post = $request->getParsedBody() ?? [];
         $this->get = $request->getQueryParams();
+        $this->urlParams = $this->prepareUrlParams($urlParams);
 
         $this->headers = $this->prepareHeaders($request->getHeaders());
         $this->files = $this->prepareFiles($request->getUploadedFiles());
@@ -34,6 +35,20 @@ class Request
 
         $this->url = $this->prepareUrl($request->getUri());
         $this->method = RequestMethod::from($request->getMethod());
+    }
+
+    private function prepareUrlParams(array $urlParams): array
+    {
+        $preparedParams = [];
+        foreach ($urlParams as $key => $param) {
+            if (intval($param) == $param) {
+                $param = +$param;
+            }
+
+            $preparedParams[$key] = $param;
+        }
+
+        return $preparedParams;
     }
 
     private function prepareFiles(array $files): array

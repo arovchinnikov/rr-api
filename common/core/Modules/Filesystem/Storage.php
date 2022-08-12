@@ -24,7 +24,7 @@ class Storage
         return file_exists($path);
     }
 
-    public static function scanDir(string $directory, bool $isRecurrent = false): ?array
+    public static function scanDir(string $directory, bool $recurrent = false, bool $lineArray = false): ?array
     {
         if (!self::exists($directory)) {
             return null;
@@ -37,17 +37,27 @@ class Storage
             $scanData[$key] = $directory . '/' . $file;
         }
 
-        if (!$isRecurrent) {
+        if (!$recurrent) {
             return array_values($scanData);
         }
 
         $fullScanData = [];
+
         foreach ($dir as $key => $file) {
-            if (is_dir($directory . '/' . $file)) {
-                $fullScanData[$key] = self::scanDir($directory . '/' . $file, true);
-            } else {
+            if (!is_dir($directory . '/' . $file)) {
                 $fullScanData[$key] = $directory . '/' . $file;
+                continue;
             }
+
+            if (!$lineArray) {
+                $fullScanData[$key] = self::scanDir($directory . '/' . $file, true);
+                continue;
+            }
+
+            $fullScanData = array_merge(
+                $fullScanData,
+                self::scanDir($directory . '/' . $file, true, true)
+            );
         }
 
         return array_values($fullScanData);
