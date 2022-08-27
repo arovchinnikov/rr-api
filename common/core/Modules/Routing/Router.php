@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Core\Modules\Routing;
 
+use BackedEnum;
 use Core\Base\Classes\Http\BaseController;
-use Core\Base\Classes\Http\ResponseObject;
+use Core\Base\DataValues\Interfaces\BaseValue;
+use Core\Base\Exceptions\AppException;
 use Core\Base\Exceptions\CoreException;
 use Core\Base\Interfaces\Types\ToArray;
 use Core\Modules\Data\Container;
@@ -30,12 +32,9 @@ class Router
         $this->routeManager = new RouteManager();
     }
 
-    public function dispatch(ServerRequestInterface|RequestInterface $requestData): ResponseInterface
+    public function dispatch(ServerRequestInterface $requestData): ResponseInterface
     {
-        $requestPath = $requestData->getUri()->getPath();
-        $requestMethod = $requestData->getMethod();
-
-        $foundRoute = $this->findRoute($requestPath, $requestMethod);
+        $foundRoute = $this->findRoute($requestData);
 
         if (empty($foundRoute)) {
             return $this->httpFactory->createErrorResponse(['message' => 'not found'], ResponseCode::notFound->value);
@@ -45,10 +44,19 @@ class Router
 
         try {
             return $this->runAction($foundRoute, $request);
+        } catch (AppException $appException) {
+            /** Business logic errors, with error code */
+            return $this->httpFactory->createErrorResponse(
+                [
+                    'error_code' => $appException->getErrorCode(),
+                    'message' => $appException->getMessage()
+                ],
+                $appException->getCode() > 99 && $appException->getCode() < 599 ? $appException->getCode() : 500
+            );
         } catch (Throwable $exception) {
             return $this->httpFactory->createErrorResponse(
                 ['message' => $exception->getMessage()],
-                $exception->getCode() > 99 ? $exception->getCode() : 500
+                $exception->getCode() > 99 && $exception->getCode() < 599 ? $exception->getCode() : 500
             );
         }
     }
@@ -56,6 +64,7 @@ class Router
     /**
      * @throws ReflectionException
      * @throws CoreException
+     * @throws AppException
      */
     private function runAction(Route $route, Request $request): ResponseInterface
     {
@@ -66,19 +75,58 @@ class Router
         $controller->response = new Response();
 
         $actionName = $route->getAction();
-        $content = $controller->$actionName();
+        $actionParams = Container::resolveControllerMethod($controller::class, $actionName, $request);
+        $content = $controller->$actionName(...$actionParams) ?? [];
 
-        if ($content instanceof ResponseObject) {
-            $content = $content->getAll();
-        } elseif ($content instanceof toArray) {
-            $content = $content->toArray();
-        }
+        $content = $this->prepareContent($content);
 
         return $this->httpFactory->createJsonResponse($content, $controller->response);
     }
 
-    private function findRoute(string $path, string $method): ?Route
+    private function prepareContent(array|ToArray $values): array
     {
+        if ($values instanceof ToArray) {
+            $values = $values->toArray();
+        }
+
+        $return = [];
+        foreach ($values as $key => $value) {
+            if (is_array($value)) {
+                $return[$key] = $this->prepareContent($value);
+                continue;
+            }
+
+            if (!is_object($value)) {
+                $return[$key] = $value;
+                continue;
+            }
+
+            if ($value instanceof ToArray) {
+                $return[$key] = $this->prepareContent($value->toArray());
+                continue;
+            }
+
+            if ($value instanceof BaseValue) {
+                $return[$key] = $value->getValue();
+                continue;
+            }
+
+            if ($value instanceof BackedEnum) {
+                $return[$key] = $value->value;
+                continue;
+            }
+
+            return [];
+        }
+
+        return $return;
+    }
+
+    private function findRoute(ServerRequestInterface|RequestInterface $requestData): ?Route
+    {
+        $path = $requestData->getUri()->getPath();
+        $method = $requestData->getMethod();
+
         if (str_ends_with($path, '/')) {
             $path = substr($path, 0, -1);
         }

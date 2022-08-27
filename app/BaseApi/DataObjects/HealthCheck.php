@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\BaseApi\DataObjects;
 
 use Carbon\Carbon;
-use Core\Base\Classes\Http\ResponseObject;
+use Core\Base\Interfaces\Types\ToArray;
 
-class HealthCheck extends ResponseObject
+class HealthCheck implements ToArray
 {
     public function toArray(): array
     {

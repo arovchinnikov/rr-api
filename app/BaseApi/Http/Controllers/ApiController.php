@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\BaseApi\Controllers;
+namespace App\BaseApi\Http\Controllers;
 
 use App\BaseApi\DataObjects\HealthCheck;
 use Core\Base\Classes\Http\BaseController;

@@ -1,7 +1,8 @@
 <?php
 
-use App\BaseApi\Controllers\ApiController;
+use App\BaseApi\Http\Controllers\UserController;
 use Core\Modules\Routing\Route;
 
-Route::get('/health-check', ApiController::class, 'healthCheck');
-Route::get('/healsth-check', ApiController::class, 'healthCheck');
+Route::get('/user/[id]', UserController::class, 'read');
+Route::get('/user', UserController::class, 'list');
+Route::post('/user', UserController::class, 'create');

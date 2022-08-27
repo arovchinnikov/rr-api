@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Core\Modules\Data;
 
+use Core\Base\Classes\Http\BaseFilter;
+use Core\Base\Classes\Http\BaseRequest;
+use Core\Modules\Http\Request;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -12,6 +15,9 @@ class Container
 {
     private static array $dependencies = [];
 
+    /**
+     * @throws ReflectionException
+     */
     public static function get(string $classname): ?object
     {
         if (empty(self::$dependencies[$classname])) {
@@ -21,7 +27,7 @@ class Container
         return self::$dependencies[$classname];
     }
 
-    public static function getAll(): array
+    public static function all(): array
     {
         return self::$dependencies;
     }
@@ -36,7 +42,7 @@ class Container
 
         $args = [];
         foreach ($dependencies as $dependency) {
-            $args[] = self::resolve($dependency);
+            $args[] = self::get($dependency);
         }
 
         $object = new $classname(...$args);
@@ -46,6 +52,30 @@ class Container
         }
 
         return $object;
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public static function resolveControllerMethod(string $classname, string $methodName, Request $request): array
+    {
+        $reflection = new ReflectionClass($classname);
+        $dependencies = self::getMethodDependencies($reflection->getMethod($methodName));
+
+        $args = [];
+        foreach ($dependencies as $dependency) {
+            if (
+                is_subclass_of($dependency, BaseRequest::class)
+                || is_subclass_of($dependency, BaseFilter::class)
+            ) {
+                $args[] = new $dependency($request);
+                continue;
+            }
+
+            $args[] = self::resolve($dependency, false);
+        }
+
+        return $args;
     }
 
     private static function getMethodDependencies(?ReflectionMethod $method): array

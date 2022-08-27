@@ -19,7 +19,7 @@ class Response
 
     public function getCode(): ResponseCode
     {
-        return $this->responseCode;
+        return $this->responseCode ?? ResponseCode::ok;
     }
 
     public function setCookie(Cookie $cookie): void

@@ -25,8 +25,8 @@ class Request
 
     public function __construct(ServerRequestInterface $request, array $urlParams = [])
     {
-        $this->post = $request->getParsedBody() ?? [];
         $this->get = $request->getQueryParams();
+        $this->post = $this->prepareBody($request);
         $this->urlParams = $this->prepareUrlParams($urlParams);
 
         $this->headers = $this->prepareHeaders($request->getHeaders());
@@ -97,5 +97,15 @@ class Request
         }
 
         return $preparedCookies;
+    }
+
+    private function prepareBody(ServerRequestInterface $request): array
+    {
+        if ($request->getHeaderLine('content-type') === 'application/json') {
+            $request->getBody()->rewind();
+            return json_decode($request->getBody()->getContents(), true) ?? [];
+        }
+
+        return $request->getParsedBody() ?? [];
     }
 }

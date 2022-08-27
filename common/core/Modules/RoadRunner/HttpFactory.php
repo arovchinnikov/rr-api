@@ -118,22 +118,26 @@ class HttpFactory implements
         return new ServerRequest($method, $uri, [], null, '1.1', $serverParams);
     }
 
-    public function createJsonResponse(array $body, Response $response): ResponseInterface
+    public function createJsonResponse(?array $body, Response $response): ResponseInterface
     {
         $serverResponse = $this
             ->createResponse()
             ->withStatus($response->getCode()->value)
             ->withHeader('Content-Type', 'application/json');
 
+        if (!empty($body)) {
+            $serverResponse->withHeader('Content-Type', 'application/json');
+            $serverResponse->getBody()->write(json_encode($body));
+        }
+
         foreach ($response->getCookies() as $cookie) {
             $serverResponse = $serverResponse->withHeader('Set-Cookie', $cookie->getRawCookie());
         }
 
-        $serverResponse->getBody()->write(json_encode($body));
         return $serverResponse;
     }
 
-    public function createErrorResponse(array $body, int $code): ResponseInterface
+    public function createErrorResponse(?array $body, int $code): ResponseInterface
     {
         $serverResponse = $this
             ->createResponse()

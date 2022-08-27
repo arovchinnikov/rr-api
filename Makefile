@@ -12,13 +12,25 @@ app:
 
 install: up
 	@$(app) composer install
-	@echo installation complete.
+	@echo Installation complete.
+restart: down up
+	@echo restart complete.
 up:
 	@$(compose) up -d
+down:
+	@$(compose) down
 destroy:
 	@$(compose) down --rmi all
+
+migrate:
+	@$(migration) migrate --no-interaction
+migration:
+	@$(migration) generate
 
 cs:
 	@$(app) vendor/bin/phpcs -v
 csf:
 	@$(app) vendor/bin/phpcbf
+
+composer:
+	@$(app) composer install

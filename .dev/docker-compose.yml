@@ -14,3 +14,27 @@ services:
     volumes:
       - ../:/app
       - ../.dev/app/config/.rr.yaml:/etc/rr.yaml:ro
+  postgres:
+    build:
+      context: ./
+      dockerfile: postgres/Dockerfile
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    env_file:
+      - ../.env
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    working_dir: /
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  mailhog:
+    build:
+      context: ./
+      dockerfile: mailhog/Dockerfile
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+volumes:
+  postgres_data: {}

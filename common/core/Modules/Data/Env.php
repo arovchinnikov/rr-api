@@ -12,10 +12,11 @@ class Env
 
     public static function init(): void
     {
-        foreach (getenv() as $key => $value) {
+        foreach ($_ENV as $key => $value) {
             $enum = EnvKey::tryFrom($key);
 
             if (empty($enum)) {
+                self::$env[$key] = $value;
                 continue;
             }
 
@@ -31,14 +32,14 @@ class Env
         }
     }
 
-    public static function get(EnvKey|string $key = null): bool|array|string
+    public static function get(EnvKey|string $key = null): null|bool|array|string
     {
         if (empty($key)) {
             return self::$env;
         }
 
         if (is_string($key)) {
-            return self::$env[$key];
+            return self::$env[$key] ?? null;
         }
 
         return self::$env[$key->value];

@@ -4,13 +4,11 @@ rpc:
   listen: tcp://127.0.0.1:6001
 server:
   command: "php /app/index.php"
-  env:
-    - XDEBUG_SESSION: "1"
 
 http:
   address: :8080
   pool:
-    debug: true
+    debug: false
     num_workers: 2
     max_jobs: 64
 

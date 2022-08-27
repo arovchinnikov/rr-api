@@ -42,3 +42,9 @@ Check code-style and fix it:
 ```
 make csf
 ```
+
+## Other information
+### MailHog
+
+Link to mailer in dev environment
+http://localhost:8025/
