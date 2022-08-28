@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Api\Filters;
 
-use App\Common\Base\Http\BaseFilter;
+use App\Common\Api\Filters\BaseFilter;
 
 class UsersFilter extends BaseFilter
 {

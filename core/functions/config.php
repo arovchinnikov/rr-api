@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Core\Modules\Data\Config;
-use Core\Modules\Data\Env;
+use Core\Components\Data\Config;
+use Core\Components\Data\Env;
 
 function env(string $key = null): bool|array|string|null
 {

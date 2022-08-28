@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Domain\Entities;
 
-use App\Common\Base\BaseModel;
+use App\Common\Domain\Entities\BaseModel;
 use App\Modules\User\Domain\ValueObjects\AccessLevel;
 use App\Modules\User\Domain\ValueObjects\Email;
 use App\Modules\User\Domain\ValueObjects\Login;
@@ -14,10 +14,10 @@ use Carbon\Carbon;
 
 /**
  * @property int $id
- * @property \App\Modules\User\Domain\ValueObjects\Login $login
- * @property \App\Modules\User\Domain\ValueObjects\Nickname $nickname
+ * @property Login $login
+ * @property Nickname $nickname
  * @property Email $email
- * @property \App\Modules\User\Domain\ValueObjects\Password $password
+ * @property Password $password
  * @property AccessLevel $accessLevel
  * @property ?string $createdAt
  * @property ?string $updatedAt

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Modules\User\Domain\Services;
 
 use App\Modules\User\Api\Filters\UsersFilter;
-use App\Modules\User\Domain\Collections\UsersList;
 use App\Modules\User\Domain\Entities\User;
 use App\Modules\User\Domain\Services\Exceptions\UserServiceException;
 use App\Modules\User\Domain\ValueObjects\Nickname;
+use App\Modules\User\Infrastructure\Collections\UsersList;
 use App\Modules\User\Infrastructure\Repositories\UserRepository;
 use Carbon\Carbon;
 use Core\Base\Exceptions\CoreException;

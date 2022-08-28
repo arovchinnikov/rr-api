@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Core;
 
-use Core\Modules\Data\Config;
-use Core\Modules\Data\Container;
-use Core\Modules\Data\Env;
-use Core\Modules\Data\Exceptions\EnvException;
-use Core\Modules\RoadRunner\Worker;
-use Core\Modules\Routing\Router;
-use Core\Modules\Security\Security;
+use Core\Components\Data\Config;
+use Core\Components\Data\Container;
+use Core\Components\Data\Env;
+use Core\Components\Data\Exceptions\EnvException;
+use Core\Components\RoadRunner\Worker;
+use Core\Components\Routing\Router;
+use Core\Components\Security\Security;
 use JsonException;
 use ReflectionException;
 use Throwable;

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Api;
 
-use App\Common\Base\Http\BaseController;
+use App\Common\Api\Controllers\BaseController;
 use App\Modules\User\Api\Filters\UsersFilter;
 use App\Modules\User\Api\Requests\UserRequest;
-use App\Modules\User\Domain\Collections\UsersList;
 use App\Modules\User\Domain\Entities\User;
-use App\Modules\User\Domain\Services\Exceptions\UserServiceException;
 use App\Modules\User\Domain\Services\UserService;
+use App\Modules\User\Infrastructure\Collections\UsersList;
 use Core\Base\Exceptions\CoreException;
 use Core\Base\Exceptions\ValidationException;
-use Core\Modules\Http\Enums\ResponseCode;
+use Core\Components\Http\Enums\ResponseCode;
 
 class UserController extends BaseController
 {

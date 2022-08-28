@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Core\Base\Exceptions;
 
-use Core\Modules\Http\Enums\ResponseCode;
+use Core\Components\Http\Enums\ResponseCode;
 use Exception;
 use Throwable;
 

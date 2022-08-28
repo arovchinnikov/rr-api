@@ -6,7 +6,7 @@ namespace App\Modules\User\Domain\ValueObjects;
 
 use App\Modules\User\Domain\ValueObjects\Exceptions\PasswordException;
 use Core\Base\DataValues\StringValue;
-use Core\Modules\Security\Security;
+use Core\Components\Security\Security;
 
 class Password extends StringValue
 {

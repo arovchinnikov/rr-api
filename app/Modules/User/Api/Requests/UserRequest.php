@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Api\Requests;
 
-use App\Common\Base\Http\BaseRequest;
+use App\Common\Api\Requests\BaseRequest;
 use App\Modules\User\Domain\Entities\User;
-use Core\Modules\Http\Enums\RequestMethod;
+use Core\Components\Http\Enums\RequestMethod;
 
 /**
  * @property User $user

@@ -17,7 +17,7 @@ class Login extends StringValue
     }
 
     /**
-     * @throws \App\Modules\User\Domain\ValueObjects\Exceptions\LoginException
+     * @throws LoginException
      */
     public function validate(): void
     {

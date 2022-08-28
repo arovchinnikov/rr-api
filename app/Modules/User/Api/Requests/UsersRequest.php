@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Api\Requests;
 
-use App\Common\Base\Http\BaseRequest;
+use App\Common\Api\Requests\BaseRequest;
 
 class UsersRequest extends BaseRequest
 {

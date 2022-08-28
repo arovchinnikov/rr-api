@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\User\Domain\Services\Exceptions;
 
 use Core\Base\Exceptions\AppException;
-use Core\Modules\Http\Enums\ResponseCode;
+use Core\Components\Http\Enums\ResponseCode;
 
 class UserServiceException extends AppException
 {

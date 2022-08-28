@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use Core\Modules\Data\Container;
-use Core\Modules\Debug\Log;
-use Core\Modules\RoadRunner\Exceptions\RoadRunnerException;
+use Core\Components\Data\Container;
+use Core\Components\Debug\Log;
+use Core\Components\RoadRunner\Exceptions\RoadRunnerException;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
-use Core\Modules\RoadRunner\Worker;
+use Core\Components\RoadRunner\Worker;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 /**
