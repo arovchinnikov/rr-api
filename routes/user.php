@@ -1,6 +1,6 @@
 <?php
 
-use App\BaseApi\Http\Controllers\UserController;
+use App\Modules\User\Api\UserController;
 use Core\Modules\Routing\Route;
 
 Route::get('/user/[id]', UserController::class, 'read');
