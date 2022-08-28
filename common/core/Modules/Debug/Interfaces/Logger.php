@@ -2,7 +2,7 @@
 
 namespace Core\Modules\Debug\Interfaces;
 
-use Core\Modules\Data\Enums\LogLevel;
+use Core\Modules\Debug\Enums\LogLevel;
 
 interface Logger
 {

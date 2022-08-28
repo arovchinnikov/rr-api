@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Core\Modules\RoadRunner;
 
+use Core\Modules\Debug\Log;
 use JsonException;
 use Spiral\RoadRunner\Http\PSR7Worker;
+use Throwable;
 
 class Worker extends PSR7Worker
 {
@@ -20,7 +22,7 @@ class Worker extends PSR7Worker
     }
 
     /**
-     * @throws JsonException|Exceptions\RoadRunnerException
+     * @throws JsonException
      */
     public function respondString(string $text): void
     {
@@ -28,5 +30,18 @@ class Worker extends PSR7Worker
         $response->getBody()->write($text);
 
         parent::respond($response);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function handleException(Throwable $exception): void
+    {
+        $message = (string)$exception;
+
+        Log::error($message);
+        /** Display an exception */
+        $this->respondString($message);
+        $this->getWorker()->error($message);
     }
 }

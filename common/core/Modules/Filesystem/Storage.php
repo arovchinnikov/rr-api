@@ -9,17 +9,29 @@ use Core\Base\Interfaces\Types\ToString;
 
 class Storage
 {
-    public static function save($path, ToString|ToArray|string|array $content, int $flag = 0): bool
+    public static function save(string $path, ToString|ToArray|string|array $content, int $flag = 0): bool
     {
         return (bool)file_put_contents($path, $content, $flag);
     }
 
-    public static function get($path): ?string
+    public static function get(string $path, bool $associative = false): null|string|array
     {
-        return file_get_contents($path) ?? null;
+        $content = file_get_contents($path) ?? null;
+
+        if (empty($content) || !$associative) {
+            return $content;
+        }
+
+        $contentArray = [];
+        foreach (explode(PHP_EOL, $content) as $value)
+        {
+            $contentArray[] = trim($value);
+        }
+
+        return $contentArray;
     }
 
-    public static function exists($path): bool
+    public static function exists(string $path): bool
     {
         return file_exists($path);
     }

@@ -10,17 +10,18 @@ class Config
 {
     private static array $config = [];
 
-    public function __construct()
-    {
-        $configStorage = ROOT . '/config';
+    private string $storage = ROOT . '/config';
 
-        $configDir = Storage::scanDir($configStorage, true, true);
+    public function update(): void
+    {
+        self::$config = [];
+
+        $configDir = Storage::scanDir($this->storage, true, true);
 
         foreach ($configDir as $configFile) {
             $values = include $configFile;
 
-            $namespace = $this->makeNamespace($configStorage, $configFile);
-
+            $namespace = $this->makeNamespace($this->storage, $configFile);
             $this->setConfigValues($namespace, $values);
         }
     }

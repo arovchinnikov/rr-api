@@ -18,7 +18,7 @@ class Stream implements StreamInterface
     private mixed $uri;
     private ?int $size;
 
-    /** @var array Hash of readable and writable stream types */
+    /** @var array HashManager of readable and writable stream types */
     private const READ_WRITE_HASH = [
         'read' => [
             'r' => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,

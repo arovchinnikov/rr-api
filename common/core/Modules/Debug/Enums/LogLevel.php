@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Modules\Data\Enums;
+namespace Core\Modules\Debug\Enums;
 
 enum LogLevel: int
 {

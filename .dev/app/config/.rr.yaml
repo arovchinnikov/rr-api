@@ -8,7 +8,7 @@ server:
 http:
   address: :8080
   pool:
-    debug: false
+    debug: true
     num_workers: 2
     max_jobs: 64
 

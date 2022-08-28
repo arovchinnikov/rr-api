@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Core\Modules\Debug;
 
 use Carbon\Carbon;
-use Core\Modules\Data\Enums\EnvKey;
-use Core\Modules\Data\Enums\LogLevel;
 use Core\Modules\Data\Env;
+use Core\Modules\Debug\Enums\LogLevel;
 use Core\Modules\Debug\Interfaces\Logger;
 use Core\Modules\Filesystem\Storage;
 use ErrorException;
@@ -60,7 +59,7 @@ class Log implements Logger
 
     public static function log(LogLevel $level, mixed $message, array $context = []): void
     {
-        $storage = ROOT . (Env::get(EnvKey::logStorage->value) ?? self::$defaultStoragePath);
+        $storage = ROOT . (Env::get('LOG_STORAGE') ?? self::$defaultStoragePath);
         $logPath = $storage . '/';
 
         $logPath .= 'main.log';

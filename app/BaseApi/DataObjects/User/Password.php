@@ -6,7 +6,7 @@ namespace App\BaseApi\DataObjects\User;
 
 use App\BaseApi\DataObjects\User\Exceptions\PasswordException;
 use Core\Base\DataValues\StringValue;
-use Core\Modules\Security\PasswordManager;
+use Core\Modules\Security\Security;
 
 class Password extends StringValue
 {
@@ -21,7 +21,7 @@ class Password extends StringValue
         }
 
         $this->password = $password;
-        $this->hash = PasswordManager::hash($password);
+        $this->hash = Security::hashPassword($password);
     }
 
     /**

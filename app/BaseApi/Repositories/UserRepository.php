@@ -24,6 +24,7 @@ class UserRepository extends PostgresRepository
         }
 
         $user = new User();
+        d($result);
         $user->setValues($result);
 
         return $user;

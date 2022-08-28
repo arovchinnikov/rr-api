@@ -9,7 +9,7 @@ use Core\Base\DataValues\Interfaces\BaseValue;
 use Core\Base\DataValues\Interfaces\ValueFields;
 use Core\Base\Exceptions\ValidationException;
 use Core\Base\Interfaces\Types\ToArray;
-use Core\Modules\Data\ValueManagers\Text;
+use Core\Modules\Helpers\Text;
 
 abstract class BaseModel implements ValueFields, ToArray
 {

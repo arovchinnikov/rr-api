@@ -5,53 +5,88 @@ declare(strict_types=1);
 namespace Core;
 
 use Core\Modules\Data\Config;
+use Core\Modules\Data\Container;
 use Core\Modules\Data\Env;
-use Core\Modules\Debug\Log;
-use Core\Modules\RoadRunner\HttpFactory;
+use Core\Modules\Data\Exceptions\EnvException;
 use Core\Modules\RoadRunner\Worker;
 use Core\Modules\Routing\Router;
-use Core\Modules\Security\PasswordManager;
+use Core\Modules\Security\Security;
 use JsonException;
+use ReflectionException;
 use Throwable;
 
 class App
 {
-    private HttpFactory $factory;
-
-    private static Worker $worker;
+    private Worker $worker;
     private Router $router;
 
+    private bool $initialized = false;
+
+    /**
+     * @throws ReflectionException
+     */
     public function __construct()
     {
-        $this->factory = new HttpFactory();
-        Env::init();
-        $config = new Config();
-        $passwordManager = new PasswordManager();
-
-        self::$worker = new Worker($this->factory);
-        $this->router = new Router($this->factory);
-    }
-
-    public static function getWorker(): ?Worker
-    {
-        return self::$worker ?? null;
+        /** @var Worker $worker */
+        $worker = Container::get(Worker::class);
+        $this->worker = $worker;
     }
 
     /**
-     * @throws JsonException|Modules\RoadRunner\Exceptions\RoadRunnerException
+     * @throws JsonException
      */
     public function run(): void
     {
-        while ($request = self::$worker->waitRequest()) {
+        while ($request = $this->worker->waitRequest()) {
             try {
+                $this->initialized ?: $this->init();
+
                 $result = $this->router->dispatch($request);
-                self::$worker->respond($result);
+                $this->worker->respond($result);
             } catch (Throwable $e) {
-                Log::error((string)$e);
-                /** Display an exception */
-                self::$worker->respondString((string)$e);
-                self::$worker->getWorker()->error((string)$e);
+                $this->worker->handleException($e);
             }
         }
+    }
+
+    /**
+     * @throws ReflectionException
+     * @throws EnvException
+     */
+    private function init(): void
+    {
+        $this->initSettings();
+        $this->initCoreComponents();
+
+        $this->initialized = true;
+    }
+
+    /**
+     * @throws ReflectionException|EnvException
+     */
+    private function initSettings(): void
+    {
+        /** @var Env $env */
+        $env = Container::get(Env::class);
+        $env->update();
+
+        /** @var Config $config */
+        $config = Container::get(Config::class);
+        $config->update();
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function initCoreComponents(): void
+    {
+        /** @var Router $router */
+        $router = Container::get(Router::class);
+        $this->router = $router;
+
+        /** @var Security $security */
+        $security = Container::get(Security::class);
+        $security->setAppSecret(Env::get('APP_SECRET'));
+        $security->init();
     }
 }

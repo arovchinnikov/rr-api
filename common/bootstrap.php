@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
-require ROOT . '/common/functions/debug.php';
+require __DIR__ . '/functions/debug.php';
+require __DIR__ . '/functions/config.php';
 
 register_shutdown_function('shutdown');
