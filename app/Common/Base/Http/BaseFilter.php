@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Base\Classes\Http;
+namespace App\Common\Base\Http;
 
 use Core\Modules\Http\Request;
 

@@ -9,8 +9,8 @@ use App\BaseApi\DataObjects\User\Email;
 use App\BaseApi\DataObjects\User\Login;
 use App\BaseApi\DataObjects\User\Nickname;
 use App\BaseApi\DataObjects\User\Password;
+use App\Common\Base\BaseModel;
 use Carbon\Carbon;
-use Core\Base\Classes\BaseModel;
 
 /**
  * @property int $id

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Core\Modules\Data\Container;
 use Core\Modules\Debug\Log;
+use Core\Modules\RoadRunner\Exceptions\RoadRunnerException;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Core\Modules\RoadRunner\Worker;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
@@ -35,6 +36,7 @@ function d(...$var): void
 /**
  * @throws JsonException
  * @throws ReflectionException
+ * @throws RoadRunnerException
  */
 function shutdown(): void
 {

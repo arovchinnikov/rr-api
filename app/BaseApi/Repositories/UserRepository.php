@@ -7,9 +7,8 @@ namespace App\BaseApi\Repositories;
 use App\BaseApi\Aggregates\User\UsersList;
 use App\BaseApi\DataObjects\User\Login;
 use App\BaseApi\Entities\User;
-use Core\Base\Classes\Http\BaseFilter;
-use Core\Base\Classes\Http\DefaultFilter;
-use Core\Base\Classes\Repositories\PostgresRepository;
+use App\Common\Base\Http\BaseFilter;
+use App\Common\Base\Repositories\PostgresRepository;
 
 class UserRepository extends PostgresRepository
 {
@@ -24,15 +23,13 @@ class UserRepository extends PostgresRepository
         }
 
         $user = new User();
-        d($result);
         $user->setValues($result);
 
         return $user;
     }
 
-    public function getUsers(BaseFilter $filter = null): UsersList
+    public function getUsers(BaseFilter $filter): UsersList
     {
-        $filter ?? $filter = new DefaultFilter();
         $filter->pagination() ?? $filter->setPagination(20, 1);
 
         $sql = 'SELECT * FROM users' . $filter->toSql();

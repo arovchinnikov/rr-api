@@ -41,6 +41,9 @@ class HttpFactory implements
         return new Request($method, $uri);
     }
 
+    /**
+     * @throws Exceptions\RoadRunnerException
+     */
     public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
     {
         if (func_num_args() < 2) {
@@ -118,6 +121,9 @@ class HttpFactory implements
         return new ServerRequest($method, $uri, [], null, '1.1', $serverParams);
     }
 
+    /**
+     * @throws Exceptions\RoadRunnerException
+     */
     public function createJsonResponse(?array $body, Response $response): ResponseInterface
     {
         $serverResponse = $this
@@ -137,6 +143,9 @@ class HttpFactory implements
         return $serverResponse;
     }
 
+    /**
+     * @throws Exceptions\RoadRunnerException
+     */
     public function createErrorResponse(?array $body, int $code): ResponseInterface
     {
         $serverResponse = $this

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Core\Modules\Routing;
 
+use App\Common\Base\Http\BaseController;
 use BackedEnum;
-use Core\Base\Classes\Http\BaseController;
 use Core\Base\DataValues\Interfaces\BaseValue;
 use Core\Base\Exceptions\AppException;
 use Core\Base\Exceptions\CoreException;
@@ -14,6 +14,7 @@ use Core\Modules\Data\Container;
 use Core\Modules\Http\Enums\ResponseCode;
 use Core\Modules\Http\Request;
 use Core\Modules\Http\Response;
+use Core\Modules\RoadRunner\Exceptions\RoadRunnerException;
 use Core\Modules\RoadRunner\HttpFactory;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -32,6 +33,9 @@ class Router
         $this->routeManager = new RouteManager();
     }
 
+    /**
+     * @throws RoadRunnerException
+     */
     public function dispatch(ServerRequestInterface $requestData): ResponseInterface
     {
         $foundRoute = $this->findRoute($requestData);
@@ -68,7 +72,7 @@ class Router
      */
     private function runAction(Route $route, Request $request): ResponseInterface
     {
-        /** @var BaseController $controller */
+        /** @var \App\Common\Base\Http\BaseController $controller */
         $controller = Container::resolve($route->getController(), false);
 
         $controller->request = $request;

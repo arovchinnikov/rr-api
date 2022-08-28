@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Core\Modules\Data;
 
-use Core\Base\Classes\Http\BaseFilter;
-use Core\Base\Classes\Http\BaseRequest;
+use App\Common\Base\Http\BaseFilter;
+use App\Common\Base\Http\BaseRequest;
 use Core\Modules\Http\Request;
 use ReflectionClass;
 use ReflectionException;

@@ -1,6 +1,6 @@
 <?php
 
-use Core\Modules\Data\Env;
+use src\Modules\Data\Env;
 
 require 'vendor/autoload.php';
 

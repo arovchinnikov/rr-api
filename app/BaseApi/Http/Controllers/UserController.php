@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\BaseApi\Http\Controllers;
 
 use App\BaseApi\Aggregates\User\UsersList;
+use App\BaseApi\Entities\User;
 use App\BaseApi\Http\Filters\UsersFilter;
 use App\BaseApi\Http\Requests\UserRequest;
-use App\BaseApi\Entities\User;
 use App\BaseApi\Services\Exceptions\UserServiceException;
 use App\BaseApi\Services\UserService;
-use Core\Base\Classes\Http\BaseController;
+use App\Common\Base\Http\BaseController;
 use Core\Base\Exceptions\CoreException;
 use Core\Base\Exceptions\ValidationException;
 use Core\Modules\Http\Enums\ResponseCode;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Base\Classes\Repositories;
+namespace App\Common\Base\Repositories;
 
 abstract class BaseRepository
 {

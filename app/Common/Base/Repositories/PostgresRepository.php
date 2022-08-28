@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Core\Base\Classes\Repositories;
+namespace App\Common\Base\Repositories;
 
-use Core\Base\Classes\BaseModel;
+use App\Common\Base\BaseModel;
 use Core\Base\Exceptions\CoreException;
 use Core\Modules\Data\Env;
 use Core\Modules\Database\Connection;

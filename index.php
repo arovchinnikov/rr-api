@@ -8,7 +8,7 @@ use Core\Modules\Debug\Log;
 const ROOT = __DIR__;
 
 require ROOT . '/vendor/autoload.php';
-require ROOT . '/common/bootstrap.php';
+require ROOT . '/core/bootstrap.php';
 
 $app = new App();
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\BaseApi\Http\Filters;
 
-use Core\Base\Classes\Http\BaseFilter;
+use App\Common\Base\Http\BaseFilter;
 
 class UsersFilter extends BaseFilter
 {

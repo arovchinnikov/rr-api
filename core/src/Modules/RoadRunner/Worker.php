@@ -22,7 +22,7 @@ class Worker extends PSR7Worker
     }
 
     /**
-     * @throws JsonException
+     * @throws JsonException|Exceptions\RoadRunnerException
      */
     public function respondString(string $text): void
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Base\Classes;
+namespace App\Common\Base;
 
 use BackedEnum;
 use Core\Base\DataValues\Interfaces\BaseValue;

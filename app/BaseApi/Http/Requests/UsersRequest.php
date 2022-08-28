@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\BaseApi\Http\Requests;
 
-use Core\Base\Classes\Http\BaseRequest;
+use App\Common\Base\Http\BaseRequest;
 
 class UsersRequest extends BaseRequest
 {

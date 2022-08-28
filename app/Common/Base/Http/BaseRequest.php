@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Core\Base\Classes\Http;
+namespace App\Common\Base\Http;
 
-use Core\Base\Classes\BaseModel;
+use App\Common\Base\BaseModel;
 use Core\Base\DataValues\Interfaces\BaseValue;
 use Core\Base\DataValues\Interfaces\ValueFields;
 use Core\Base\Exceptions\ValidationException;

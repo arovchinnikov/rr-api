@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\BaseApi\Http\Requests;
 
 use App\BaseApi\Entities\User;
-use Core\Base\Classes\Http\BaseRequest;
+use App\Common\Base\Http\BaseRequest;
 use Core\Modules\Http\Enums\RequestMethod;
 
 /**
