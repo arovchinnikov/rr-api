@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Components\Helpers;
+namespace Core\Helpers;
 
 class Text
 {

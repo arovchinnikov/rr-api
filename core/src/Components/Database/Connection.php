@@ -31,6 +31,8 @@ class Connection
             if (isset($result[0]['count'])) {
                 return $result[0]['count'];
             }
+
+            return $result[0];
         }
 
         return $result;

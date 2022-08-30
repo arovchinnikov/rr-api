@@ -7,9 +7,9 @@ namespace App\Common\Domain\Entities;
 use BackedEnum;
 use Core\Base\DataValues\Interfaces\BaseValue;
 use Core\Base\DataValues\Interfaces\ValueFields;
-use Core\Base\Exceptions\ValidationException;
 use Core\Base\Interfaces\Types\ToArray;
-use Core\Components\Helpers\Text;
+use Core\Exceptions\ValidationException;
+use Core\Helpers\Text;
 
 abstract class BaseModel implements ValueFields, ToArray
 {

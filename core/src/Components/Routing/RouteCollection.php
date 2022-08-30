@@ -6,9 +6,11 @@ namespace Core\Components\Routing;
 
 use Core\Components\Data\Config;
 use Core\Components\Filesystem\Storage;
+use Core\Components\Http\Request;
+use Core\Components\Routing\Interfaces\RouteCollectionInterface;
 use Throwable;
 
-class RouteManager
+class RouteCollection implements RouteCollectionInterface
 {
     private string $routeStorage;
 
@@ -36,6 +38,24 @@ class RouteManager
     public function getErrors(): ?Throwable
     {
         return self::$e;
+    }
+
+    public function match(Request $request): ?Route
+    {
+        $path = $request->url;
+        $method = $request->method;
+
+        foreach ($this->getRoutes($method->value) as $route) {
+            if (empty($route)) {
+                return null;
+            }
+
+            if ($route->matches($path)) {
+                return $route;
+            }
+        }
+
+        return null;
     }
 
     /**

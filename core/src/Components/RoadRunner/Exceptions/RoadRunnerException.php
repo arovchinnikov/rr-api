@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Core\Components\RoadRunner\Exceptions;
 
-use Core\Base\Exceptions\CoreException;
-
-class RoadRunnerException extends CoreException
+class RoadRunnerException extends \Core\Exceptions\CoreException
 {
     /**
      * @throws RoadRunnerException

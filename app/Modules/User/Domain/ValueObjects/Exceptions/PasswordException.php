@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Domain\ValueObjects\Exceptions;
 
-use Core\Base\Exceptions\ValidationException;
-
-class PasswordException extends ValidationException
+class PasswordException extends \Core\Exceptions\ValidationException
 {
     /**
      * @throws PasswordException

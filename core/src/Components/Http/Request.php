@@ -18,16 +18,14 @@ class Request
     public readonly array $files;
     /** @var Cookie[] */
     public readonly array $cookies;
-
     public readonly string $url;
     public readonly RequestMethod $method;
     public readonly array $urlParams;
 
-    public function __construct(ServerRequestInterface $request, array $urlParams = [])
+    public function __construct(ServerRequestInterface $request)
     {
         $this->get = $request->getQueryParams();
         $this->post = $this->prepareBody($request);
-        $this->urlParams = $this->prepareUrlParams($urlParams);
 
         $this->headers = $this->prepareHeaders($request->getHeaders());
         $this->files = $this->prepareFiles($request->getUploadedFiles());
@@ -37,7 +35,7 @@ class Request
         $this->method = RequestMethod::from($request->getMethod());
     }
 
-    private function prepareUrlParams(array $urlParams): array
+    public function initUrlParams(array $urlParams): array
     {
         $preparedParams = [];
         foreach ($urlParams as $key => $param) {
@@ -48,7 +46,7 @@ class Request
             $preparedParams[$key] = $param;
         }
 
-        return $preparedParams;
+        return $this->urlParams = $preparedParams;
     }
 
     private function prepareFiles(array $files): array

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\User\Domain\ValueObjects;
 
 use Core\Base\DataValues\StringValue;
-use Core\Base\Exceptions\ValidationException;
+use Core\Exceptions\ValidationException;
 
 class Email extends StringValue
 {

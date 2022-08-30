@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Core\Components\RoadRunner;
 
+use BackedEnum;
+use Core\Base\DataValues\Interfaces\BaseValue;
 use Core\Base\Interfaces\Types\ToArray;
 use Core\Components\Http\Enums\ResponseCode;
 use Core\Components\Http\Response;
@@ -124,12 +126,14 @@ class HttpFactory implements
     /**
      * @throws Exceptions\RoadRunnerException
      */
-    public function createJsonResponse(?array $body, Response $response): ResponseInterface
+    public function createJsonResponse(array|ToArray $content, Response $response): ResponseInterface
     {
         $serverResponse = $this
             ->createResponse()
             ->withStatus($response->getCode()->value)
             ->withHeader('Content-Type', 'application/json');
+
+        $body = $this->prepareContent($content);
 
         if (!empty($body)) {
             $serverResponse->withHeader('Content-Type', 'application/json');
@@ -155,5 +159,44 @@ class HttpFactory implements
 
         $serverResponse->getBody()->write(json_encode($body));
         return $serverResponse;
+    }
+
+    private function prepareContent(array|ToArray $values): array
+    {
+        if ($values instanceof ToArray) {
+            $values = $values->toArray();
+        }
+
+        $return = [];
+        foreach ($values as $key => $value) {
+            if (is_array($value)) {
+                $return[$key] = $this->prepareContent($value);
+                continue;
+            }
+
+            if (!is_object($value)) {
+                $return[$key] = $value;
+                continue;
+            }
+
+            if ($value instanceof ToArray) {
+                $return[$key] = $this->prepareContent($value->toArray());
+                continue;
+            }
+
+            if ($value instanceof BaseValue) {
+                $return[$key] = $value->getValue();
+                continue;
+            }
+
+            if ($value instanceof BackedEnum) {
+                $return[$key] = $value->value;
+                continue;
+            }
+
+            return [];
+        }
+
+        return $return;
     }
 }

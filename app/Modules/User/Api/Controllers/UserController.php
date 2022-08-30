@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Modules\User\Api;
+namespace App\Modules\User\Api\Controllers;
 
 use App\Common\Api\Controllers\BaseController;
 use App\Modules\User\Api\Filters\UsersFilter;
@@ -10,9 +10,9 @@ use App\Modules\User\Api\Requests\UserRequest;
 use App\Modules\User\Domain\Entities\User;
 use App\Modules\User\Domain\Services\UserService;
 use App\Modules\User\Infrastructure\Collections\UsersList;
-use Core\Base\Exceptions\CoreException;
-use Core\Base\Exceptions\ValidationException;
 use Core\Components\Http\Enums\ResponseCode;
+use Core\Exceptions\CoreException;
+use Core\Exceptions\ValidationException;
 
 class UserController extends BaseController
 {

@@ -7,10 +7,10 @@ namespace App\Common\Api\Requests;
 use App\Common\Domain\Entities\BaseModel;
 use Core\Base\DataValues\Interfaces\BaseValue;
 use Core\Base\DataValues\Interfaces\ValueFields;
-use Core\Base\Exceptions\ValidationException;
 use Core\Base\Interfaces\Types\ToArray;
 use Core\Components\Http\Enums\RequestMethod;
 use Core\Components\Http\Request;
+use Core\Exceptions\ValidationException;
 
 abstract class BaseRequest implements ToArray, ValueFields
 {
@@ -34,7 +34,7 @@ abstract class BaseRequest implements ToArray, ValueFields
     }
 
     /**
-     * @throws ValidationException
+     * @throws \Core\Exceptions\ValidationException
      */
     public function validate(): void
     {

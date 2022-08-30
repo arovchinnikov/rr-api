@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Core\Components\Database\Exceptions;
 
-use Core\Base\Exceptions\CoreException;
 use PDOException;
 
-class ConnectionException extends CoreException
+class ConnectionException extends \Core\Exceptions\CoreException
 {
     /**
      * @throws ConnectionException

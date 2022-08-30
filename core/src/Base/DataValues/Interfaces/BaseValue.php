@@ -2,7 +2,7 @@
 
 namespace Core\Base\DataValues\Interfaces;
 
-use Core\Base\Exceptions\ValidationException;
+use Core\Exceptions\ValidationException;
 
 interface BaseValue
 {

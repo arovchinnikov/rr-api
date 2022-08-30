@@ -15,11 +15,6 @@ class Security
         return self::$hashManager->prepare($password);
     }
 
-    public function init(): void
-    {
-        $this->setDefaultHashManager();
-    }
-
     public function setAppSecret(string $appSecret = null): void
     {
         $this->appSecret = $appSecret ?? '';

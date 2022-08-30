@@ -2,19 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Core\Base\Exceptions;
+namespace Core\Exceptions;
 
 use Core\Components\Http\Enums\ResponseCode;
-use Throwable;
 
 class ValidationException extends AppException
 {
     public function __construct(
-        string $message = "",
+        string $message = null,
         int $errorCode = 1000,
         ResponseCode|int $code = 400,
-        ?Throwable $previous = null
     ) {
-        parent::__construct($message, $errorCode, $code, $previous);
+        parent::__construct($message, $errorCode, $code);
     }
 }

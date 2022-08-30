@@ -57,7 +57,7 @@ class Container
     /**
      * @throws ReflectionException
      */
-    public static function resolveControllerMethod(string $classname, string $methodName, Request $request): array
+    public static function resolveMethod(string $classname, string $methodName, Request $request = null): array
     {
         $reflection = new ReflectionClass($classname);
         $dependencies = self::getMethodDependencies($reflection->getMethod($methodName));

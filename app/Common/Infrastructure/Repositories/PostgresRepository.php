@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Common\Infrastructure\Repositories;
 
 use App\Common\Domain\Entities\BaseModel;
-use Core\Base\Exceptions\CoreException;
 use Core\Components\Data\Env;
 use Core\Components\Database\Connection;
 use Core\Components\Database\Exceptions\ConnectionException;
+use Core\Exceptions\CoreException;
 use Throwable;
 
 class PostgresRepository extends BaseRepository

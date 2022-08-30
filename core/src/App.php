@@ -33,11 +33,11 @@ class App
     }
 
     /**
-     * @throws JsonException
+     * @throws JsonException|Components\RoadRunner\Exceptions\RoadRunnerException
      */
     public function run(): void
     {
-        while ($request = $this->worker->waitRequest()) {
+        while ($request = $this->worker->handleRequest()) {
             try {
                 $this->initialized ?: $this->init();
 
@@ -87,6 +87,6 @@ class App
         /** @var Security $security */
         $security = Container::get(Security::class);
         $security->setAppSecret(Env::get('APP_SECRET'));
-        $security->init();
+        $security->setDefaultHashManager();
     }
 }

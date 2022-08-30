@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Modules\User\Infrastructure\Repositories;
 
 use App\Common\Api\Filters\BaseFilter;
+use App\Common\Infrastructure\Repositories\PostgresRepository;
 use App\Modules\User\Domain\Entities\User;
 use App\Modules\User\Domain\ValueObjects\Login;
 use App\Modules\User\Infrastructure\Collections\UsersList;
 
-class UserRepository extends \App\Common\Infrastructure\Repositories\PostgresRepository
+class UserRepository extends PostgresRepository
 {
     public function getById(int $id): ?User
     {

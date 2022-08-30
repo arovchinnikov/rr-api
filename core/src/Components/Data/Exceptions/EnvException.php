@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Core\Components\Data\Exceptions;
 
-use Core\Base\Exceptions\CoreException;
-
-class EnvException extends CoreException
+class EnvException extends \Core\Exceptions\CoreException
 {
     /**
      * @throws EnvException

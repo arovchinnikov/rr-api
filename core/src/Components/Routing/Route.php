@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core\Components\Routing;
 
 use Core\Components\Http\Enums\RequestMethod;
-use Core\Components\Routing\Exceptions\RouteException;
+use Core\Components\Routing\Exceptions\RoutingException;
 use Throwable;
 
 class Route
@@ -17,7 +17,7 @@ class Route
     private RequestMethod $method;
 
     /**
-     * @throws RouteException
+     * @throws RoutingException
      */
     public function __construct(string $rule, RequestMethod $method, string $controller, string $action)
     {
@@ -92,9 +92,9 @@ class Route
     private static function add(string $rule, RequestMethod $method, string $controller, string $action): void
     {
         try {
-            RouteManager::addRoute(new Route($rule, $method, $controller, $action));
+            RouteCollection::addRoute(new Route($rule, $method, $controller, $action));
         } catch (Throwable $exception) {
-            RouteManager::setErrors($exception);
+            RouteCollection::setErrors($exception);
         }
     }
 
@@ -116,12 +116,12 @@ class Route
     }
 
     /**
-     * @throws RouteException
+     * @throws RoutingException
      */
     private function setEndpoint(string $controller, string $action): void
     {
         if (!method_exists($controller, $action)) {
-            RouteException::controllerOrActionNotFound($controller, $action);
+            RoutingException::controllerOrActionNotFound($controller, $action);
         }
 
         $this->controller = $controller;

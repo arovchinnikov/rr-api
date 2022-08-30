@@ -11,7 +11,7 @@ use App\Modules\User\Domain\ValueObjects\Nickname;
 use App\Modules\User\Infrastructure\Collections\UsersList;
 use App\Modules\User\Infrastructure\Repositories\UserRepository;
 use Carbon\Carbon;
-use Core\Base\Exceptions\CoreException;
+use Core\Exceptions\CoreException;
 
 class UserService
 {
@@ -33,7 +33,7 @@ class UserService
     }
 
     /**
-     * @throws UserServiceException|CoreException
+     * @throws UserServiceException|\Core\Exceptions\CoreException
      */
     public function createUser(User $user): ?User
     {
