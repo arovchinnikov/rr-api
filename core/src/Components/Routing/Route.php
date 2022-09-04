@@ -6,9 +6,9 @@ namespace Core\Components\Routing;
 
 use Core\Components\Http\Enums\RequestMethod;
 use Core\Components\Routing\Exceptions\RoutingException;
-use Throwable;
+use Core\Components\Routing\Interfaces\RouteInterface;
 
-class Route
+class Route implements RouteInterface
 {
     private string $rule;
     private string $controller;
@@ -26,26 +26,41 @@ class Route
         $this->method = $method;
     }
 
+    /**
+     * @throws RoutingException
+     */
     public static function get(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::get, $controller, $action);
     }
 
+    /**
+     * @throws RoutingException
+     */
     public static function post(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::post, $controller, $action);
     }
 
+    /**
+     * @throws RoutingException
+     */
     public static function patch(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::patch, $controller, $action);
     }
 
+    /**
+     * @throws RoutingException
+     */
     public static function put(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::put, $controller, $action);
     }
 
+    /**
+     * @throws RoutingException
+     */
     public static function delete(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::delete, $controller, $action);
@@ -89,13 +104,12 @@ class Route
         return $this->params;
     }
 
+    /**
+     * @throws RoutingException
+     */
     private static function add(string $rule, RequestMethod $method, string $controller, string $action): void
     {
-        try {
-            RouteCollection::addRoute(new Route($rule, $method, $controller, $action));
-        } catch (Throwable $exception) {
-            RouteCollection::setErrors($exception);
-        }
+        RouteCollection::addRoute(new Route($rule, $method, $controller, $action));
     }
 
     private function setPattern(string $path): void

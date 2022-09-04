@@ -8,7 +8,7 @@ use Core\Components\Data\Config;
 use Core\Components\Filesystem\Storage;
 use Core\Components\Http\Request;
 use Core\Components\Routing\Interfaces\RouteCollectionInterface;
-use Throwable;
+use Core\Components\Routing\Interfaces\RouteInterface;
 
 class RouteCollection implements RouteCollectionInterface
 {
@@ -16,13 +16,11 @@ class RouteCollection implements RouteCollectionInterface
 
     private static array $routes = [];
 
-    private static Throwable $e;
-
     public function __construct()
     {
         $this->routeStorage = ROOT . Config::get('main.route-storage');
 
-        $this->collectRoutes();
+        $this->collect();
     }
 
     public static function addRoute(Route $route): void
@@ -30,22 +28,12 @@ class RouteCollection implements RouteCollectionInterface
         self::$routes[$route->getMethod()->value][] = $route;
     }
 
-    public static function setErrors(Throwable $e): void
-    {
-        self::$e = $e;
-    }
-
-    public function getErrors(): ?Throwable
-    {
-        return self::$e;
-    }
-
     public function match(Request $request): ?Route
     {
         $path = $request->url;
         $method = $request->method;
 
-        foreach ($this->getRoutes($method->value) as $route) {
+        foreach ($this->all($method->value) as $route) {
             if (empty($route)) {
                 return null;
             }
@@ -59,9 +47,9 @@ class RouteCollection implements RouteCollectionInterface
     }
 
     /**
-     * @return Route[]|Route
+     * @return RouteInterface[]
      */
-    public function getRoutes(string $method = null): array|Route
+    public function all(string $method = null): array
     {
         $routes = isset($method) ? self::$routes[$method] : self::$routes;
 
@@ -72,7 +60,7 @@ class RouteCollection implements RouteCollectionInterface
         return $routes;
     }
 
-    private function collectRoutes(): void
+    private function collect(): void
     {
         $routeFiles = Storage::scanDir($this->routeStorage, true, true) ?? [];
 

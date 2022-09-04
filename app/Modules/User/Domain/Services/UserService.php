@@ -33,7 +33,7 @@ class UserService
     }
 
     /**
-     * @throws UserServiceException|\Core\Exceptions\CoreException
+     * @throws UserServiceException|CoreException
      */
     public function createUser(User $user): ?User
     {

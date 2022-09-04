@@ -126,7 +126,7 @@ enum ResponseCode: int
             self::unprocessableEntity => 'Unprocessable Entity',
             self::locked => 'Locked',
             self::failedDependency => 'Failed Dependency',
-            self::unorderedCollection => 'Unordered Collection',
+            self::unorderedCollection => 'Unordered CollectionInterface',
             self::upgradeRequired => 'Upgrade Required',
             self::preconditionRequired => 'Precondition Required',
             self::tooManyRequests => 'Too Many Requests',

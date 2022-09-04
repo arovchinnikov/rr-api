@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Core\App;
-use Core\Modules\Debug\Log;
+use Core\Components\Debug\Log;
 
 const ROOT = __DIR__;
 

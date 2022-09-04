@@ -35,8 +35,12 @@ class Request
         $this->method = RequestMethod::from($request->getMethod());
     }
 
-    public function initUrlParams(array $urlParams): array
+    public function initUrlParams(array $urlParams): void
     {
+        if (!empty($this->urlParams)) {
+            return;
+        }
+
         $preparedParams = [];
         foreach ($urlParams as $key => $param) {
             if (intval($param) == $param) {
@@ -46,7 +50,7 @@ class Request
             $preparedParams[$key] = $param;
         }
 
-        return $this->urlParams = $preparedParams;
+        $this->urlParams = $preparedParams;
     }
 
     private function prepareFiles(array $files): array
