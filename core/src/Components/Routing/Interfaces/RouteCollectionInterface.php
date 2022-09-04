@@ -6,7 +6,7 @@ namespace Core\Components\Routing\Interfaces;
 
 use Core\Components\Http\Request;
 
-interface RouteCollectionInterface8
+interface RouteCollectionInterface
 {
     public function match(Request $request): ?RouteInterface;
 
