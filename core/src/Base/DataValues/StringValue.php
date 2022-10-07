@@ -11,7 +11,6 @@ abstract class StringValue implements BaseValue, toString
 
     public function validate(): void
     {
-
     }
 
     public function toString(): ?string

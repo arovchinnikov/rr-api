@@ -10,6 +10,5 @@ abstract class BoolValue implements BaseValue
 
     public function validate(): void
     {
-
     }
 }

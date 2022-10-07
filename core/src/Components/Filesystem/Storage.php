@@ -23,8 +23,7 @@ class Storage
         }
 
         $contentArray = [];
-        foreach (explode(PHP_EOL, $content) as $value)
-        {
+        foreach (explode(PHP_EOL, $content) as $value) {
             $contentArray[] = trim($value);
         }
 

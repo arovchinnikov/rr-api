@@ -33,7 +33,7 @@ class App
     }
 
     /**
-     * @throws JsonException|Components\RoadRunner\Exceptions\RoadRunnerException
+     * @throws Components\RoadRunner\Exceptions\RoadRunnerException|JsonException
      */
     public function run(): void
     {

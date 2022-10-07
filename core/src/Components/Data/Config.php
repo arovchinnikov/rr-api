@@ -10,7 +10,7 @@ class Config
 {
     private static array $config = [];
 
-    private string $storage = ROOT . '/config';
+    private string $storage = ROOT . '/app/common/config';
 
     public function update(): void
     {

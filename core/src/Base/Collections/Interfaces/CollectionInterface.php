@@ -9,5 +9,4 @@ use Iterator;
 
 interface CollectionInterface extends Iterator, ToArray
 {
-
 }

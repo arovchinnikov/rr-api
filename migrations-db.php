@@ -1,16 +1,20 @@
 <?php
 
-use src\Modules\Data\Env;
+use Core\Components\Data\Env;
 
 require 'vendor/autoload.php';
+require 'core/bootstrap.php';
 
-Env::init();
+const ROOT = __DIR__;
+
+$env = new Env();
+$env->update();
 
 return [
-    'dbname' => Env::get('POSTGRES_DB'),
-    'user' => Env::get('POSTGRES_USER'),
-    'password' => Env::get('POSTGRES_PASSWORD'),
-    'host' => Env::get('POSTGRES_HOST'),
-    'port' => Env::get('POSTGRES_PORT'),
+    'dbname' => env('POSTGRES_DB'),
+    'user' => env('POSTGRES_USER'),
+    'password' => env('POSTGRES_PASSWORD'),
+    'host' => env('POSTGRES_HOST'),
+    'port' => env('POSTGRES_PORT'),
     'driver' => 'pdo_pgsql'
 ];

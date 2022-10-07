@@ -10,6 +10,5 @@ abstract class IntValue implements BaseValue
 
     public function validate(): void
     {
-
     }
 }

@@ -10,6 +10,5 @@ abstract class FloatValue implements BaseValue
 
     public function validate(): void
     {
-
     }
 }

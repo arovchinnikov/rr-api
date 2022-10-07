@@ -3,19 +3,19 @@ version: "2.7"
 rpc:
   listen: tcp://127.0.0.1:6001
 server:
-  command: "php /app/index.php"
+  command: "php /api/index.php"
 
 http:
   address: :8080
   pool:
     debug: true
-    num_workers: 2
+    num_workers: 1
     max_jobs: 64
 
 reload:
   interval: 1s
-  patterns: [ ".php" ]
+  patterns: [ "index.php" ]
   services:
     http:
       recursive: true
-      dirs: [ "/app" ]
+      dirs: [ "/api" ]

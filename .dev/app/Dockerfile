@@ -23,6 +23,6 @@ RUN cp /go/bin/mhsendmail /usr/bin/mhsendmail
 
 RUN echo 'sendmail_path = "/usr/bin/mhsendmail --smtp-addr=mailhog:1025"' > /usr/local/etc/php/php.ini
 
-WORKDIR /app
+WORKDIR /api
 
 CMD ["/usr/bin/rr", "serve", "-d", "-c", "/etc/rr.yaml"]

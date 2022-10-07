@@ -15,10 +15,7 @@ class Container
 {
     private static array $dependencies = [];
 
-    /**
-     * @throws ReflectionException
-     */
-    public static function get(string $classname): ?object
+    public static function get(string $classname): mixed
     {
         if (empty(self::$dependencies[$classname])) {
             return self::resolve($classname);
@@ -35,7 +32,7 @@ class Container
     /**
      * @throws ReflectionException
      */
-    public static function resolve(string $classname, bool $saveDependency = true): object
+    public static function resolve(string $classname, bool $saveDependency = true): mixed
     {
         $reflection = new ReflectionClass($classname);
         $dependencies = self::getMethodDependencies($reflection->getConstructor());
