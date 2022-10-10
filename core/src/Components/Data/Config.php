@@ -10,25 +10,41 @@ class Config
 {
     private static array $config = [];
 
-    private string $storage = ROOT . '/app/common/config';
+    private static string $storage = ROOT . '/app/common/config';
 
-    public function update(): void
+    public static function update(): void
     {
         self::$config = [];
 
-        $configDir = Storage::scanDir($this->storage, true, true);
+        $self = new self();
+
+        $configDir = Storage::scanDir(self::$storage, true, true);
 
         foreach ($configDir as $configFile) {
             $values = include $configFile;
 
-            $namespace = $this->makeNamespace($this->storage, $configFile);
-            $this->setConfigValues($namespace, $values);
+            $namespace = $self->makeNamespace(self::$storage, $configFile);
+            $self->setConfigValues($namespace, $values);
         }
     }
 
     public static function get(string $key = null): mixed
     {
-        return isset($key) ? self::$config[$key] : self::$config ?? null;
+        $keyParts = explode('.', $key);
+
+        if (count($keyParts) === 2) {
+            return isset($key) ? self::$config[$key] : self::$config ?? null;
+        }
+
+        $keyParts[0] = $keyParts[0] . '.' . $keyParts[1];
+        unset($keyParts[1]);
+
+        $value = self::$config;
+        foreach ($keyParts as $part) {
+            $value = $value[$part] ?? null;
+        }
+
+        return $value;
     }
 
     private function setConfigValues(string $namespace, array $config): void

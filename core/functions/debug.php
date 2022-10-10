@@ -9,12 +9,8 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Core\Components\RoadRunner\Worker;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
-/**
- * @throws ReflectionException
- */
 function d(...$var): void
 {
-    /** @var Worker $worker */
     $worker = Container::get(Worker::class);
 
     try {
@@ -35,7 +31,6 @@ function d(...$var): void
 
 /**
  * @throws JsonException
- * @throws ReflectionException
  * @throws RoadRunnerException
  */
 function shutdown(): void

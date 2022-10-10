@@ -5,19 +5,22 @@ declare(strict_types=1);
 namespace Core\Components\Routing;
 
 use Core\Components\Data\Container;
+use Core\Components\Http\Interfaces\RequestInterface;
 use Core\Components\Http\Request;
 use Core\Components\Http\Response;
 use Core\Components\RoadRunner\HttpFactory;
+use Core\Components\RoadRunner\Interfaces\HttpFactoryInterface;
 use Core\Components\Routing\Exceptions\RoutingException;
 use Core\Components\Routing\Interfaces\RouteCollectionInterface;
+use Core\Components\Routing\Interfaces\RouterInterface;
 use Core\Exceptions\AppException;
 use Core\Exceptions\CoreException;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 
-class Router
+class Router implements RouterInterface
 {
-    private HttpFactory $httpFactory;
+    private HttpFactoryInterface $httpFactory;
     private RouteCollectionInterface $routeCollection;
 
     public function __construct(HttpFactory $factory, RouteCollection $routeCollection)
@@ -32,7 +35,7 @@ class Router
      * @throws ReflectionException
      * @throws CoreException
      */
-    public function dispatch(Request $request): ResponseInterface
+    public function dispatch(RequestInterface $request): ResponseInterface
     {
         $route = $this->routeCollection->match($request);
         if (empty($route)) {

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Core\Components\Http;
 
 use Core\Components\Http\Enums\RequestMethod;
+use Core\Components\Http\Interfaces\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
-class Request
+class Request implements RequestInterface
 {
     public readonly array $get;
     public readonly array $post;

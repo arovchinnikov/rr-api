@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace App\Common\Api\Controllers;
 
-use App\Common\Domain\DTO\HealthCheck;
+use Carbon\Carbon;
+use Core\Components\Database\Connection;
 use Core\Components\Http\Enums\ResponseCode;
 
 class ApiToolsController extends BaseController
 {
-    public function healthCheck(): HealthCheck
+    public function healthCheck(Connection $connection): array
     {
-        $this->response->setCode(ResponseCode::teapot);
+        $this->response->setCode(ResponseCode::ok);
 
-        return new HealthCheck();
+        return [
+            'success' => true,
+            'time' => Carbon::now()->format('Y-m-d H:m:s')
+        ];
     }
 }

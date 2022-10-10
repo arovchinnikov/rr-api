@@ -26,41 +26,26 @@ class Route implements RouteInterface
         $this->method = $method;
     }
 
-    /**
-     * @throws RoutingException
-     */
     public static function get(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::get, $controller, $action);
     }
 
-    /**
-     * @throws RoutingException
-     */
     public static function post(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::post, $controller, $action);
     }
 
-    /**
-     * @throws RoutingException
-     */
     public static function patch(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::patch, $controller, $action);
     }
 
-    /**
-     * @throws RoutingException
-     */
     public static function put(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::put, $controller, $action);
     }
 
-    /**
-     * @throws RoutingException
-     */
     public static function delete(string $rule, string $controller, string $action): void
     {
         self::add($rule, RequestMethod::delete, $controller, $action);
@@ -104,9 +89,6 @@ class Route implements RouteInterface
         return $this->params;
     }
 
-    /**
-     * @throws RoutingException
-     */
     private static function add(string $rule, RequestMethod $method, string $controller, string $action): void
     {
         RouteCollection::addRoute(new Route($rule, $method, $controller, $action));

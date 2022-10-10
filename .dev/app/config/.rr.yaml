@@ -14,7 +14,7 @@ http:
 
 reload:
   interval: 1s
-  patterns: [ "index.php" ]
+  patterns: [ ".php" ]
   services:
     http:
       recursive: true

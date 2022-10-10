@@ -12,17 +12,18 @@ class Env
     private static array $values = [];
 
     private string $env = ROOT . '/.env';
-    private string $envExample = ROOT . '/.env.example';
 
     /**
      * @throws EnvException
      */
-    public function update(): void
+    public static function update(): void
     {
         self::$values = [];
 
-        $this->loadFromServer();
-        $this->loadFromFiles();
+        $self = new self();
+
+        $self->loadFromServer();
+        $self->loadFromFiles();
     }
 
     public static function get(string $key = null): null|bool|array|string
@@ -42,9 +43,9 @@ class Env
      */
     private function loadFromFiles(): void
     {
-        $content = Storage::exists($this->env) ? Storage::get($this->env, true) : $this->generateFromExample();
+        $content = Storage::get($this->env, true);
         if (empty($content)) {
-            EnvException::envFilesNotFound();
+            EnvException::envFileNotFound();
         }
 
         foreach ($content as $line) {
@@ -59,16 +60,5 @@ class Env
 
             self::$values[$value[0]] = $value[1];
         }
-    }
-
-    private function generateFromExample(): ?array
-    {
-        if (Storage::exists($this->envExample)) {
-            Storage::save($this->env, Storage::get($this->envExample));
-
-            return Storage::get($this->env, true);
-        }
-
-        return null;
     }
 }

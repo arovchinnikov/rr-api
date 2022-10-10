@@ -6,14 +6,16 @@ namespace Core\Components\RoadRunner;
 
 use Core\Components\Debug\Log;
 use Core\Components\Http\Request;
+use Core\Components\RoadRunner\Interfaces\HttpFactoryInterface;
+use Core\Components\RoadRunner\Interfaces\WorkerInterface;
 use Core\Exceptions\Interfaces\AppExceptionInterface;
 use JsonException;
 use Spiral\RoadRunner\Http\PSR7Worker;
 use Throwable;
 
-class Worker extends PSR7Worker
+class Worker extends PSR7Worker implements WorkerInterface
 {
-    private readonly HttpFactory $httpFactory;
+    private readonly HttpFactoryInterface $httpFactory;
 
     public function __construct(HttpFactory $httpFactory)
     {
@@ -23,6 +25,9 @@ class Worker extends PSR7Worker
         parent::__construct($worker, $httpFactory, $httpFactory, $httpFactory);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function handleRequest(): ?Request
     {
         $request = $this->waitRequest();
@@ -34,8 +39,10 @@ class Worker extends PSR7Worker
         return new Request($request);
     }
 
+
     /**
-     * @throws JsonException|Exceptions\RoadRunnerException
+     * @throws JsonException
+     * @throws Exceptions\RoadRunnerException
      */
     public function respondString(string $text): void
     {
