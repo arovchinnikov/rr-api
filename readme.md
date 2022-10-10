@@ -12,6 +12,7 @@
 - [x] Base HTTP components
 - [x] Config and env updating/reading
 - [x] Custom Request and Response
+- [x] Response code enums
 - [x] Controllers and Routes
 - [x] DB connection and Config
 - [x] Migration tools
