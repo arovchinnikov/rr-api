@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Core\Components\Routing;
 
-use Core\Components\Data\Container;
+use Core\Components\Dependencies\Container;
 use Core\Components\Http\Interfaces\RequestInterface;
 use Core\Components\Http\Request;
 use Core\Components\Http\Response;
@@ -20,13 +20,15 @@ use ReflectionException;
 
 class Router implements RouterInterface
 {
-    private HttpFactoryInterface $httpFactory;
-    private RouteCollectionInterface $routeCollection;
+    protected HttpFactoryInterface $httpFactory;
+    protected RouteCollectionInterface $routeCollection;
+    protected Container $container;
 
-    public function __construct(HttpFactory $factory, RouteCollection $routeCollection)
+    public function __construct(HttpFactory $factory, RouteCollection $routeCollection, Container $container)
     {
         $this->httpFactory = $factory;
         $this->routeCollection = $routeCollection;
+        $this->container = $container;
     }
 
     /**
@@ -53,13 +55,13 @@ class Router implements RouterInterface
      */
     private function runAction(Route $route, Request $request): ResponseInterface
     {
-        $controller = Container::resolve($route->getController(), false);
+        $controller = $this->container->resolve($route->getController(), false);
 
         $controller->request = $request;
         $controller->response = new Response();
 
         $action = $route->getAction();
-        $actionParams = Container::resolveMethod($controller::class, $action, $request);
+        $actionParams = $this->container->getActionArgs($controller::class, $action, $request);
         $content = $controller->$action(...$actionParams) ?? [];
 
         return $this->httpFactory->createJsonResponse($content, $controller->response);

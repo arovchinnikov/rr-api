@@ -2,30 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Core;
+namespace App;
 
-use Core\Base\AbstractApp;
-use Core\Components\Data\Container;
-use Core\Components\RoadRunner\Worker;
-use Core\Components\Routing\Router;
+use Core\Base\BaseApp;
+use Core\Components\RoadRunner\Exceptions\RoadRunnerException;
 use JsonException;
 use Throwable;
 
-class App extends AbstractApp
+class App extends BaseApp
 {
-    public function __construct()
-    {
-        $this->worker = Container::get(Worker::class);
-    }
-
-    public function bootstrap(): void
-    {
-        $this->router = Container::get(Router::class);
-    }
-
     /**
      * @throws JsonException
-     * @throws Components\RoadRunner\Exceptions\RoadRunnerException
+     * @throws RoadRunnerException
      */
     public function run(): void
     {

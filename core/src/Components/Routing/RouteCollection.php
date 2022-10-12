@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Core\Components\Routing;
 
-use Core\Components\Data\Config;
+use Core\Components\Config\Config;
 use Core\Components\Filesystem\Storage;
 use Core\Components\Http\Request;
 use Core\Components\Routing\Interfaces\RouteCollectionInterface;
@@ -18,7 +18,7 @@ class RouteCollection implements RouteCollectionInterface
 
     public function __construct()
     {
-        $this->routeStorage = ROOT . Config::get('main.route-storage');
+        $this->routeStorage = ROOT . Config::get('main.route-storage') ?? '/app/common/routes';
 
         $this->collect();
     }

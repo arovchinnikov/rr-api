@@ -2,50 +2,48 @@
 
 declare(strict_types=1);
 
-namespace Core\Components\Data;
+namespace Core\Components\Dependencies;
 
 use App\Common\Api\Filters\BaseFilter;
 use App\Common\Api\Requests\BaseRequest;
+use Core\Components\Dependencies\Interfaces\ContainerInterface;
 use Core\Components\Http\Request;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 
-class Container
+class Container implements ContainerInterface
 {
-    private static array $dependencies = [];
+    protected static array $items = [];
 
-    public static function get(string $classname): mixed
+    public function get(string $classname): mixed
     {
-        if (empty(self::$dependencies[$classname])) {
+        if (empty(self::$items[$classname])) {
             return self::resolve($classname);
         }
 
-        return self::$dependencies[$classname];
+        return self::$items[$classname];
     }
 
-    public static function all(): array
+    public function all(): array
     {
-        return self::$dependencies;
+        return self::$items;
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public static function resolve(string $classname, bool $saveDependency = true): mixed
+    public function resolve(string $classname, bool $save = true): mixed
     {
         $reflection = new ReflectionClass($classname);
         $dependencies = self::getMethodDependencies($reflection->getConstructor());
 
         $args = [];
         foreach ($dependencies as $dependency) {
-            $args[] = self::get($dependency);
+            $args[] = self::resolve($dependency, $save);
         }
 
         $object = new $classname(...$args);
 
-        if ($saveDependency) {
-            self::$dependencies[$classname] = $object;
+        if ($save) {
+            self::$items[$classname] = $object;
         }
 
         return $object;
@@ -54,7 +52,7 @@ class Container
     /**
      * @throws ReflectionException
      */
-    public static function resolveMethod(string $classname, string $methodName, Request $request = null): array
+    public function getActionArgs(string $classname, string $methodName, Request $request = null): array
     {
         $reflection = new ReflectionClass($classname);
         $dependencies = self::getMethodDependencies($reflection->getMethod($methodName));
@@ -75,7 +73,12 @@ class Container
         return $args;
     }
 
-    private static function getMethodDependencies(?ReflectionMethod $method): array
+    public function clean(): void
+    {
+        self::$items = [];
+    }
+
+    protected function getMethodDependencies(?ReflectionMethod $method): array
     {
         if (empty($method)) {
             return [];

@@ -1,6 +1,6 @@
 <?php
 
-use Core\Components\Data\Env;
+use Core\Components\Config\Env;
 
 require 'vendor/autoload.php';
 require 'core/bootstrap.php';

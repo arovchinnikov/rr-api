@@ -29,7 +29,7 @@ class RoadRunnerException extends \Core\Exceptions\CoreException
      */
     public static function withParsedBodyError(): void
     {
-        throw new self('Data must be an object, array or null was given');
+        throw new self('Config must be an object, array or null was given');
     }
 
     /**

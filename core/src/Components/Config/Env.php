@@ -2,16 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Core\Components\Data;
+namespace Core\Components\Config;
 
-use Core\Components\Data\Exceptions\EnvException;
+use Core\Components\Config\Exceptions\EnvException;
 use Core\Components\Filesystem\Storage;
 
 class Env
 {
     private static array $values = [];
 
-    private string $env = ROOT . '/.env';
+    private static string $path;
+
+    public static function setFile(string $path): void
+    {
+        self::$path = $path;
+    }
 
     /**
      * @throws EnvException
@@ -43,7 +48,7 @@ class Env
      */
     private function loadFromFiles(): void
     {
-        $content = Storage::get($this->env, true);
+        $content = Storage::get(self::$path, true);
         if (empty($content)) {
             EnvException::envFileNotFound();
         }

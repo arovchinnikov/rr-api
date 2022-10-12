@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Components\Data\Exceptions;
+namespace Core\Components\Config\Exceptions;
 
 use Core\Exceptions\CoreException;
 

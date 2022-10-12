@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core\Components\Debug;
 
 use Carbon\Carbon;
-use Core\Components\Data\Env;
+use Core\Components\Config\Env;
 use Core\Components\Debug\Enums\LogLevel;
 use Core\Components\Debug\Interfaces\Logger;
 use Core\Components\Filesystem\Storage;

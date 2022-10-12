@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-use Core\Components\Data\Container;
 use Core\Components\Debug\Log;
+use Core\Components\Dependencies\Container;
 use Core\Components\RoadRunner\Exceptions\RoadRunnerException;
-use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Core\Components\RoadRunner\Worker;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 function d(...$var): void
 {
-    $worker = Container::get(Worker::class);
+    $worker = (new Container)->get(Worker::class);
 
     try {
         $debugData = [];
@@ -39,7 +39,7 @@ function shutdown(): void
 
     if (!empty($error)) {
         /** @var Worker $worker */
-        $worker = Container::get(Worker::class);
+        $worker = (new Container)->get(Worker::class);
 
         Log::error(implode(',', $error));
         $worker->respondString(implode(',', $error));

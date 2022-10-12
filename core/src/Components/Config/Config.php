@@ -2,15 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Core\Components\Data;
+namespace Core\Components\Config;
 
 use Core\Components\Filesystem\Storage;
 
 class Config
 {
     private static array $config = [];
+    private static string $path;
 
-    private static string $storage = ROOT . '/app/common/config';
+    public static function setPath(string $storage): void
+    {
+        self::$path = $storage;
+    }
 
     public static function update(): void
     {
@@ -18,12 +22,12 @@ class Config
 
         $self = new self();
 
-        $configDir = Storage::scanDir(self::$storage, true, true);
+        $configDir = Storage::scanDir(self::$path, true, true);
 
         foreach ($configDir as $configFile) {
             $values = include $configFile;
 
-            $namespace = $self->makeNamespace(self::$storage, $configFile);
+            $namespace = $self->makeNamespace(self::$path, $configFile);
             $self->setConfigValues($namespace, $values);
         }
     }
@@ -32,7 +36,7 @@ class Config
     {
         $keyParts = explode('.', $key);
 
-        if (count($keyParts) === 2) {
+        if (count($keyParts) < 3) {
             return isset($key) ? self::$config[$key] : self::$config ?? null;
         }
 
@@ -45,6 +49,11 @@ class Config
         }
 
         return $value;
+    }
+
+    public static function set(string $key, mixed $value): void
+    {
+        self::$config[$key] = $value;
     }
 
     private function setConfigValues(string $namespace, array $config): void

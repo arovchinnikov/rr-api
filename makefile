@@ -1,6 +1,6 @@
-name := file_service
+name := rr_api
 
-.PHONY: app
+.PHONY: app tests
 
 compose = docker-compose -f .dev/docker-compose.yml -p="$(name)"
 migration = $(app) vendor/bin/doctrine-migrations
@@ -12,7 +12,7 @@ app:
 
 install: up
 	@$(app) composer install
-	@$(app) cp .env.example .env
+	@$(app) cp -n .env.example .env
 	@echo Installation complete.
 restart: down up
 	@echo restart complete.
@@ -32,6 +32,9 @@ cs:
 	@$(app) vendor/bin/phpcs -v
 csf:
 	@$(app) vendor/bin/phpcbf
+
+tests:
+	@$(app) vendor/bin/phpunit
 
 composer:
 	@$(app) composer install
