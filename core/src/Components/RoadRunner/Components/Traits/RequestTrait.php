@@ -64,7 +64,7 @@ trait RequestTrait
         return $new;
     }
 
-    public function getUri(): UriInterface
+    public function getUri(): UriInterface|null
     {
         return $this->uri;
     }

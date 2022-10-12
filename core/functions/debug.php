@@ -40,8 +40,6 @@ function shutdown(): void
     if (!empty($error)) {
         /** @var Worker $worker */
         $worker = (new Container)->get(Worker::class);
-
-        Log::error(implode(',', $error));
         $worker->respondString(implode(',', $error));
 
         exit();

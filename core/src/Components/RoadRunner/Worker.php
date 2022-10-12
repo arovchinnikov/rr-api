@@ -58,8 +58,6 @@ class Worker extends PSR7Worker implements WorkerInterface
      */
     public function handleException(Throwable $exception): void
     {
-        Log::error($exception);
-
         if ($exception instanceof AppExceptionInterface) {
             $content['code'] = $exception->getErrorCode();
         }

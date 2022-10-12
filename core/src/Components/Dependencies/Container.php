@@ -59,14 +59,6 @@ class Container implements ContainerInterface
 
         $args = [];
         foreach ($dependencies as $dependency) {
-            if (
-                is_subclass_of($dependency, BaseRequest::class)
-                || is_subclass_of($dependency, BaseFilter::class)
-            ) {
-                $args[] = new $dependency($request);
-                continue;
-            }
-
             $args[] = self::resolve($dependency, false);
         }
 

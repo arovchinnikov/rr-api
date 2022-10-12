@@ -37,42 +37,42 @@ trait MessageTrait
         return $this->headers;
     }
 
-    public function hasHeader($header): bool
+    public function hasHeader($name): bool
     {
-        return isset($this->headerNames[strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')]);
+        return isset($this->headerNames[strtr($name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')]);
     }
 
-    public function getHeader($header): array
+    public function getHeader($name): array
     {
-        $header = strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
-        if (!isset($this->headerNames[$header])) {
+        $name = strtr($name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+        if (!isset($this->headerNames[$name])) {
             return [];
         }
 
-        $header = $this->headerNames[$header];
+        $name = $this->headerNames[$name];
 
-        return $this->headers[$header];
+        return $this->headers[$name];
     }
 
-    public function getHeaderLine($header): string
+    public function getHeaderLine($name): string
     {
-        return implode(', ', $this->getHeader($header));
+        return implode(', ', $this->getHeader($name));
     }
 
     /**
      * @throws RoadRunnerException
      */
-    public function withHeader($header, $value): self
+    public function withHeader($name, $value): self
     {
-        $value = $this->validateAndTrimHeader($header, $value);
-        $normalized = strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+        $value = $this->validateAndTrimHeader($name, $value);
+        $normalized = strtr($name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
 
         $new = clone $this;
         if (isset($new->headerNames[$normalized])) {
             unset($new->headers[$new->headerNames[$normalized]]);
         }
-        $new->headerNames[$normalized] = $header;
-        $new->headers[$header] = $value;
+        $new->headerNames[$normalized] = $name;
+        $new->headers[$name] = $value;
 
         return $new;
     }
@@ -80,28 +80,28 @@ trait MessageTrait
     /**
      * @throws RoadRunnerException
      */
-    public function withAddedHeader($header, $value): self
+    public function withAddedHeader($name, $value): self
     {
-        if (!is_string($header) || '' === $header) {
+        if (!is_string($name) || '' === $name) {
             RoadRunnerException::invalidHeaderName();
         }
 
         $new = clone $this;
-        $new->setHeaders([$header => $value]);
+        $new->setHeaders([$name => $value]);
 
         return $new;
     }
 
-    public function withoutHeader($header): self
+    public function withoutHeader($name): self
     {
-        $normalized = strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
+        $normalized = strtr($name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
         if (!isset($this->headerNames[$normalized])) {
             return $this;
         }
 
-        $header = $this->headerNames[$normalized];
+        $name = $this->headerNames[$normalized];
         $new = clone $this;
-        unset($new->headers[$header], $new->headerNames[$normalized]);
+        unset($new->headers[$name], $new->headerNames[$normalized]);
 
         return $new;
     }
@@ -154,9 +154,9 @@ trait MessageTrait
     /**
      * @throws RoadRunnerException
      */
-    private function validateAndTrimHeader(string $header, array|string $values): array
+    private function validateAndTrimHeader(string $name, array|string $values): array
     {
-        if (1 !== preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@", $header)) {
+        if (1 !== preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@", $name)) {
             RoadRunnerException::invalidHeaderName();
         }
 
