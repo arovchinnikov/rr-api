@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Core\Components\Debug\Log;
 use Core\Components\Dependencies\Container;
 use Core\Components\RoadRunner\Exceptions\RoadRunnerException;
 use Core\Components\RoadRunner\Worker;

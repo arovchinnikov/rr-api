@@ -5,27 +5,28 @@ declare(strict_types=1);
 namespace App;
 
 use Core\Base\BaseApp;
-use Core\Components\RoadRunner\Exceptions\RoadRunnerException;
-use JsonException;
-use Throwable;
 
 class App extends BaseApp
 {
     /**
-     * @throws JsonException
-     * @throws RoadRunnerException
+     * List of bootloaders to load with init
+     * @return string[]
      */
-    public function run(): void
+    public function bootloaders(): array
     {
-        while ($request = $this->worker->handleRequest()) {
-            try {
-                $this->init();
+        return [
 
-                $result = $this->router->dispatch($request);
-                $this->worker->respond($result);
-            } catch (Throwable $e) {
-                $this->worker->handleException($e);
-            }
-        }
+        ];
+    }
+
+    /**
+     * List of middlewares to handle with any request
+     * @return string[]
+     */
+    public function middlewares(): array
+    {
+        return [
+
+        ];
     }
 }

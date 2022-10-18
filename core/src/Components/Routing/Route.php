@@ -10,50 +10,57 @@ use Core\Components\Routing\Interfaces\RouteInterface;
 
 class Route implements RouteInterface
 {
-    private string $rule;
+    private string $url;
     private string $controller;
     private string $action;
     private array $params = [];
     private RequestMethod $method;
 
+    private array $middlewares = [];
+
     /**
      * @throws RoutingException
      */
-    public function __construct(string $rule, RequestMethod $method, string $controller, string $action)
+    public function __construct(string $url, RequestMethod $method, string $controller, string $action)
     {
-        $this->setPattern($rule);
+        $this->setPattern($url);
         $this->setEndpoint($controller, $action);
         $this->method = $method;
     }
 
-    public static function get(string $rule, string $controller, string $action): void
+    public static function get(string $url, string $controller, string $action): Route
     {
-        self::add($rule, RequestMethod::get, $controller, $action);
+        return self::add($url, RequestMethod::get, $controller, $action);
     }
 
-    public static function post(string $rule, string $controller, string $action): void
+    public static function post(string $url, string $controller, string $action): Route
     {
-        self::add($rule, RequestMethod::post, $controller, $action);
+        return self::add($url, RequestMethod::post, $controller, $action);
     }
 
-    public static function patch(string $rule, string $controller, string $action): void
+    public static function patch(string $url, string $controller, string $action): Route
     {
-        self::add($rule, RequestMethod::patch, $controller, $action);
+        return self::add($url, RequestMethod::patch, $controller, $action);
     }
 
-    public static function put(string $rule, string $controller, string $action): void
+    public static function put(string $url, string $controller, string $action): Route
     {
-        self::add($rule, RequestMethod::put, $controller, $action);
+        return self::add($url, RequestMethod::put, $controller, $action);
     }
 
-    public static function delete(string $rule, string $controller, string $action): void
+    public static function delete(string $url, string $controller, string $action): Route
     {
-        self::add($rule, RequestMethod::delete, $controller, $action);
+        return self::add($url, RequestMethod::delete, $controller, $action);
+    }
+
+    private static function add(string $url, RequestMethod $method, string $controller, string $action): Route
+    {
+        return RouteManager::addRoute(new Route($url, $method, $controller, $action));
     }
 
     public function matches(string $path): bool
     {
-        if (preg_match($this->rule, $path, $rawParams)) {
+        if (preg_match($this->url, $path, $rawParams)) {
             $params = [];
             foreach ($rawParams as $name => $value) {
                 if (is_string($name)) {
@@ -67,6 +74,13 @@ class Route implements RouteInterface
         }
 
         return false;
+    }
+
+    public function middleware(string $classname, array $options = []): self
+    {
+        $this->middlewares[$classname] = $options;
+
+        return $this;
     }
 
     public function getController(): string
@@ -89,11 +103,6 @@ class Route implements RouteInterface
         return $this->params;
     }
 
-    private static function add(string $rule, RequestMethod $method, string $controller, string $action): void
-    {
-        RouteCollection::addRoute(new Route($rule, $method, $controller, $action));
-    }
-
     private function setPattern(string $path): void
     {
         $path = explode('/', $path);
@@ -108,7 +117,7 @@ class Route implements RouteInterface
         }
 
         $pattern = implode('\/', $pattern);
-        $this->rule =  '/^' . $pattern . '$/';
+        $this->url =  '/^' . $pattern . '$/';
     }
 
     /**
