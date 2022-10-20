@@ -4,64 +4,47 @@ declare(strict_types=1);
 
 namespace Core\Components\Routing;
 
-use Core\Components\Data\Container;
 use Core\Components\Http\Interfaces\RequestInterface;
-use Core\Components\Http\Request;
-use Core\Components\Http\Response;
-use Core\Components\RoadRunner\HttpFactory;
-use Core\Components\RoadRunner\Interfaces\HttpFactoryInterface;
 use Core\Components\Routing\Exceptions\RoutingException;
-use Core\Components\Routing\Interfaces\RouteCollectionInterface;
+use Core\Components\Routing\Interfaces\HandlerInterface;
+use Core\Components\Routing\Interfaces\RouteManagerInterface;
 use Core\Components\Routing\Interfaces\RouterInterface;
-use Core\Exceptions\AppException;
 use Core\Exceptions\CoreException;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionException;
 
 class Router implements RouterInterface
 {
-    private HttpFactoryInterface $httpFactory;
-    private RouteCollectionInterface $routeCollection;
+    protected RouteManagerInterface $routeManager;
+    protected HandlerInterface $handler;
 
-    public function __construct(HttpFactory $factory, RouteCollection $routeCollection)
+    protected array $middlewares = [];
+
+    public function __construct(RouteManager $routeManager, Handler $handler)
     {
-        $this->httpFactory = $factory;
-        $this->routeCollection = $routeCollection;
+        $this->routeManager = $routeManager;
+        $this->handler = $handler;
     }
 
     /**
-     * @throws AppException
      * @throws RoutingException
-     * @throws ReflectionException
      * @throws CoreException
+     * @throws ReflectionException
      */
     public function dispatch(RequestInterface $request): ResponseInterface
     {
-        $route = $this->routeCollection->match($request);
+        $route = $this->routeManager->match($request);
         if (empty($route)) {
             RoutingException::notFound();
         }
 
-        $request->initUrlParams($route->getParams());
-        return $this->runAction($route, $request);
-    }
+        /**
+         * пробросить middlewares из App, array_merge(route->middlewares, appMiddlewares)
+         */
 
-    /**
-     * @throws ReflectionException
-     * @throws CoreException
-     * @throws AppException
-     */
-    private function runAction(Route $route, Request $request): ResponseInterface
-    {
-        $controller = Container::resolve($route->getController(), false);
-
-        $controller->request = $request;
-        $controller->response = new Response();
-
-        $action = $route->getAction();
-        $actionParams = Container::resolveMethod($controller::class, $action, $request);
-        $content = $controller->$action(...$actionParams) ?? [];
-
-        return $this->httpFactory->createJsonResponse($content, $controller->response);
+        return $this->handler
+            ->setMiddlewares($this->middlewares)
+            ->setEndpoint($route)
+            ->handle($request);
     }
 }

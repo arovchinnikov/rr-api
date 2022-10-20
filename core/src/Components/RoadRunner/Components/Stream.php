@@ -3,9 +3,7 @@
 namespace Core\Components\RoadRunner\Components;
 
 use Core\Components\RoadRunner\Exceptions\RoadRunnerException;
-use Error;
 use Psr\Http\Message\StreamInterface;
-use Throwable;
 
 class Stream implements StreamInterface
 {
@@ -36,6 +34,8 @@ class Stream implements StreamInterface
 
     /**
      * @throws RoadRunnerException
+     *
+     * @param false|resource|string $body
      */
     public static function create(mixed $body = ''): StreamInterface
     {
@@ -73,25 +73,11 @@ class Stream implements StreamInterface
      */
     public function __toString(): string
     {
-        try {
-            if ($this->isSeekable()) {
-                $this->seek(0);
-            }
-
-            return $this->getContents();
-        } catch (Throwable $e) {
-            if (PHP_VERSION_ID >= 70400) {
-                throw $e;
-            }
-
-            restore_error_handler();
-
-            if ($e instanceof Error) {
-                return trigger_error((string) $e, E_USER_ERROR);
-            }
-
-            return '';
+        if ($this->isSeekable()) {
+            $this->seek(0);
         }
+
+        return $this->getContents();
     }
 
     public function close(): void

@@ -1,4 +1,12 @@
 /.idea/
-/storage/logs/*.log
 /vendor/
 .env
+
+
+
+
+/storage/cache/*
+!/storage/cache/.gitkeep
+
+/storage/logs/*
+!/storage/logs/.gitkeep

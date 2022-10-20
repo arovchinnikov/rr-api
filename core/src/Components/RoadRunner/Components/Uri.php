@@ -267,7 +267,7 @@ class Uri implements UriInterface
     /**
      * @throws RoadRunnerException
      */
-    private function filterPort($port): ?int
+    private function filterPort(int|null $port): ?int
     {
         if (null === $port) {
             return null;
@@ -284,7 +284,7 @@ class Uri implements UriInterface
     /**
      * @throws RoadRunnerException
      */
-    private function filterPath($path): string
+    private function filterPath(string $path): string
     {
         if (!is_string($path)) {
             RoadRunnerException::pathTypeError();
@@ -300,7 +300,7 @@ class Uri implements UriInterface
     /**
      * @throws RoadRunnerException
      */
-    private function filterQueryAndFragment($str): string
+    private function filterQueryAndFragment(string $str): string
     {
         if (!is_string($str)) {
             RoadRunnerException::queryTypeError();

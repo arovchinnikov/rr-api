@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php" cacheResultFile="./storage/cache/phpunit.result.cache">
+    <testsuite name="Core">
+        <directory suffix="Test.php">./tests/core</directory>
+    </testsuite>
+</phpunit>
